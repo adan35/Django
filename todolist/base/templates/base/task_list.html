@@ -14,28 +14,35 @@
 </div>
 <hr>
 
-<h1>My Todo List</h1>
-<a href="{% url 'task-create' %}">Add Task</a>
+<dev id="search-add-wrapper">
+  <form action="" method="get" style="margin-top: 20px; display: flex;">
+    <input type="text" name="search-area" id="" value="{{ search_input }}">
+    <input class="button" type="submit" value="Search">
+  </form>
+  <a id="add-link"  href="{% url 'task-create' %}">&#x2b;</a>
+</dev>
 
-<form action="" method="get">
-  <input type="text" name="search-area" id="">
-  <input type="submit" value="Search">
-</form>
 
-<table>
-  <tr>
-    <th>Item</th>
-    <th></th>
-  </tr>
+<div class="task-items-wrapper">
   {% for task in tasks %}
-    <tr>
-      <td>{{ task.title }}</td>
-      <td><a href="{% url 'task-update' task.id|escape %}">Edit</a></td>
-      <td><a href="{% url 'task-delete' task.id|escape %}">Delete</a></td>
-    </tr>
-    {% empty %}
-    <h3>No Items</h3>
+    <div class="task-wrapper">
+      {% if task.complete %}
+        <div class="task-title">
+          <div class="task-complete-icon"></div>
+          <i><s><a href="{% url 'task-update' task.id %}">{{ task }}</a></s></i>
+        </div>
+        <a class="delete-link" href="{% url 'task-delete' task.id|escape %}">&#215;</a>
+      {% else %}
+        <div class="task-title">
+          <div class="task-incomplete-icon"></div>
+          <a href="{% url 'task-update' task.id %}">{{ task }}</a>
+        </div>
+        <a class="delete-link" href="{% url 'task-delete' task.id|escape %}">&#215;</a>
+      {% endif %}
+    </div>
+  {% empty %}
+  <h3>No Items</h3>
   {% endfor %}
-</table>
+</div>
 
 {% endblock content %}
